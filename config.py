@@ -59,7 +59,7 @@ BESS = {
     ###costs
     #"bess_subsidy_rate": 0.30, 
     "capex_kwh"      : 106000,      #JPY/kWh turnkey cost (92k +14k installation costs /kwh) (METI)
-    "capex_kw"       : 20000,       #JPY/kW  (power capacity component)
+    #"capex_kw"       : 20000,       #JPY/kW  (power capacity component)
     "opex_kwh_yr"    : 1500,        #JPY/kWh/yr
     "lifetime_yr"    : 15,          #calendar life (years)
     "replacement_cost_kwh": 60000,  #JPY/kWh at end of life
@@ -95,7 +95,7 @@ LOAD = {
 ### Economics 
 ECONOMICS = {
     "project_lifetime": 25,           #years
-    "discount_rate"  : 0.04,          #real discount rate (4%)
+    "discount_rate"  : 0.04,          # discount rate (4%)
     "inflation_rate" : 0.015,          #JPY inflation
     "currency"       : "JPY",
 }
@@ -111,7 +111,7 @@ RESILIENCE = {
 ### MOPSO
 MOPSO = {
     "n_particles"    : 100,            #population size
-    "n_iterations"   : 20,           #max iterations
+    "n_iterations"   : 150,           #max iterations
     "w_start"        : 0.9,           #inertia weight at iteration 0
     "w_end"          : 0.4,           #inertia weight at final iteration
     "c1"             : 1.5,           #cognitive coefficient

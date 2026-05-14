@@ -160,7 +160,7 @@ class MOPSO:
         for y in range(1, n + 1):
             discount = (1 + r) ** y 
             opex_y = opex_base * (1 + i) ** (y - 1)
-            avoided_y = avoided_y1
+            avoided_y = avoided_y1 * (1 + i) ** (y - 1)
             
             repl_cost_y = 0.0
             if y in replacement_years:
@@ -177,8 +177,8 @@ class MOPSO:
             total_disc_energy += res["served_kwh"] / discount
         
         capex_annual = capex_total * crf
-        repl_present_value = sum((bess_e * self.bess_cfg["replacement_cost_kwh"]) * (1 + i) ** y / (1 + r) ** y - bess.capex_total_jpy * self.bess_cfg["salvage_fraction"] / (1 + r) ** y  for y in replacement_years)
-        tac = capex_annual + opex_base + op_cost_y1 + repl_present_value * crf
+        repl_present_value = sum((bess_e * self.bess_cfg["replacement_cost_kwh"]) * (1 + i) ** y / (1 + r) ** y - bess.capex_total_jpy * self.bess_cfg["salvage_fraction"] / (1 + r) ** y   for y in replacement_years)
+        tac = capex_annual + opex_base + repl_present_value * crf
 
 
         # Obj 2: Self-Sufficiency (We use 1-SS if the optimizer is a minimizer)
@@ -194,11 +194,11 @@ class MOPSO:
 
         for y in range(1, n + 1):
             opex_y    = opex_base * (1 + i) ** (y - 1)
-            avoided_y = avoided_y1
+            avoided_y = avoided_y1 * (1 + i) ** (y - 1)
             repl_cost_y = 0.0
             if y in replacement_years:
-                repl_cost_y = ((bess_e * self.bess_cfg["replacement_cost_kwh"]) * (1 + i) ** y - bess.capex_total_jpy * self.bess_cfg["salvage_fraction"] / (1 + r) ** y)
-            cumulative += (avoided_y - opex_y - repl_cost_y) / (1 + r) ** y  # every year, not just replacement
+                repl_cost_y = ((bess_e * self.bess_cfg["replacement_cost_kwh"]) * (1 + i) ** y - bess.capex_total_jpy * self.bess_cfg["salvage_fraction"] / (1 + r) ** y )
+            cumulative += (avoided_y - opex_y - repl_cost_y) / discount # every year, not just replacement
             if cumulative >= 0 and payback_year == n:
                 payback_year = y
                 break
